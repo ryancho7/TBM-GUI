@@ -10,6 +10,7 @@ If this is your first time in this repo, make a branch with your name in format 
 Soham Raut  
 Daniel Nordgren  
 Kaito Yan
+Dawit Hailu
 
 
 
