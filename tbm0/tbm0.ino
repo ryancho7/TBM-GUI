@@ -1,3 +1,6 @@
+// The following is the control for tunnel boring machine 0. It involves interfacing with 2 motor drivers:
+// one for the operation of left and right wheels, and one for the control of the cutterhead
+
 // Wheel pins
 int leftWheel1 = 2;
 int leftWheel2 = 3;
