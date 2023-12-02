@@ -24,9 +24,40 @@ void setup() {
   pinMode(cut2, OUTPUT);
   pinMode(cutENA, OUTPUT);
 
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  testCutterHead();
 
+}
+
+// direction should be a string, left or right
+// speed should be between 0 and 255
+void runCutterHead(String direction, int speed) {
+  if (direction.equalsIgnoreCase("right")) {
+    digitalWrite(cut1, HIGH);
+    digitalWrite(cut2, LOW);
+  }
+  else if (direction.equalsIgnoreCase("left")) {
+    digitalWrite(cut1, LOW);
+    digitalWrite(cut2, HIGH);
+  }
+  analogWrite(cutENA, speed);
+}
+
+// Test/showcase cutterhead
+void testCutterHead() {
+  runCutterHead("left", 255);
+  delay(1000);
+  runCutterHead("left", 120);
+  delay(1000);
+  runCutterHead("right", 120);
+  delay(1000);
+  runCutterHead("right", 255);
+  delay(1000);
+  runCutterHead("right", 120);
+  delay(1000);
+  runCutterHead("left", 120);
+  delay(1000);
 }
