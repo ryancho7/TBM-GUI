@@ -1,0 +1,86 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 10px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  height: auto;
+}
+
+.header {
+  grid-column: span 3;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.motors, .propulsion, .sensors, .water, .status {
+  background-color: #ddd;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.sectionTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stopButton {
+  background-color: red;
+  aspect-ratio: 1;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.motorItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.motorItem .label {
+  background-color: gray;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.motorItem .data {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  align-items: center;
+}
+
+.data .bar {
+  background-color: green;
+  width: 50px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.statusIndicator {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statusItem {
+  background-color: white;
+  padding: 10px;
+  margin: 5px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.statusItem.alert {
+  background-color: red;
+  color: white;
+}
