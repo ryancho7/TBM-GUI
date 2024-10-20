@@ -9,7 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{overflow: 'hidden'}}>
+      <body style={{backgroundColor: 'white', height: '100%'}}>
         <Navbar /> 
         {children}
       </body>

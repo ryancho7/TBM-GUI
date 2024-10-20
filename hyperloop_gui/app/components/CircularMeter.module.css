@@ -1,18 +1,17 @@
 .meterContainer {
-    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
 }
 
 
 
 .meterBackground {
     fill: none;
-    stroke: #ddd;
+    stroke: white;
     stroke-width: 10;
 }
 

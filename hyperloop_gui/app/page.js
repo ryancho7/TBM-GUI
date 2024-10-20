@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 import CircularMeter from "./components/CircularMeter";
 import QuickStatus from "./components/QuickStatus";
-
+import IntegrityMeter from "./components/IntegrityMeter";
 import { useState } from 'react';
 export default function Home() {
   const motors = [
@@ -12,6 +12,7 @@ export default function Home() {
     {name: 'Core', status: 'green', rpm: 1200, temp: 50},
   ];
   
+  const [machineIntegrity, setMachineIntegrity] = useState(79);
   const [data, setData] = useState(0);
 
   const handleSliderChange = (event) => {
@@ -22,16 +23,24 @@ export default function Home() {
     <div className={styles.container}>
       {/* Header Section */}
       <header className={styles.header}>
-        <div>
-          <div style={{ backgroundColor: 'green', height: '20px', width: '200px', borderRadius: '5px' }}></div>
-          <span>70%</span>
+        <div style={{height: '30px', width: '200px'}}>
+          <IntegrityMeter integrity={machineIntegrity} green={80} yellow={60}/>
         </div>
         <button className={styles.stopButton}>STOP</button>
       </header>
 
-      {/* Motors Section */}
+      {/* Cutterhead Section */}
       <section className={styles.motors}>
-        <div className={styles.sectionTitle}>Motors</div>
+        <div className={styles.sectionTitle}>Cutter Head</div>
+        <div className={styles.sectionContent}>
+          <section>
+            <div>RPM</div>
+            <div style={{height: '250px', width: '250px'}}>
+              <CircularMeter min={0} max={200} data={data} partitions={10}/>
+            </div>
+            
+          </section>
+        </div>
         {motors.map((motor, index) => (
           <QuickStatus 
             name={motor.name} 
@@ -43,7 +52,7 @@ export default function Home() {
         ))}
       </section>
 
-      {/* Propulsion Section */}
+      {/* Pump Section */}
       <section className={styles.propulsion}>
         <div>
           <h1>Speedometer Example</h1>
@@ -62,17 +71,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sensors Section */}
-      <section className={styles.sensors}>
-        <div className={styles.sectionTitle}>Sensors</div>
-      </section>
-
-      {/* Pump Section */}
-      <section className={styles.water}>
-        <div className={styles.sectionTitle}>Pump</div>
-        <p>Pressure (PSI)</p>
-        <CircularMeter min={0} max={500} data={75} partitions={10} />
-      </section>
 
       {/* Status Section */}
       <section className={styles.status}>
