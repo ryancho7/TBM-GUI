@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import CircularMeter from "./components/CircularMeter";
 import QuickStatus from "./components/QuickStatus";
 import IntegrityMeter from "./components/IntegrityMeter";
+import Status from "./components/status";
 import { useState } from 'react';
 export default function Home() {
   const motors = [
@@ -13,6 +14,9 @@ export default function Home() {
   ];
   
   const [machineIntegrity, setMachineIntegrity] = useState(79);
+  const [cutterHeadStatus, setCutterHeadStatus] = useState("Runnings")
+  const [motorTemp, setMotorTemp] = useState(20);
+  const [circuitTemp, setCircuitTemp] = useState(18);
   const [data, setData] = useState(0);
 
   const handleSliderChange = (event) => {
@@ -32,12 +36,19 @@ export default function Home() {
       {/* Cutterhead Section */}
       <section className={styles.motors}>
         <div className={styles.sectionTitle}>Cutter Head</div>
+        <div className={styles.statusContainer}>
+          <div style={{marginRight: '20px'}}>Status:</div> 
+          <Status color={'green'} description={cutterHeadStatus}/>
+        </div>
+
+        <div className={styles.rpmContainer}>
+          <div className={styles.meterTitle}>Rotation Speed</div>
+          <CircularMeter min={0} max={200} data={data} partitions={10} units={"RPM"}/>
+        </div>
         <div className={styles.sectionContent}>
           <section>
             <div>RPM</div>
-            <div style={{height: '250px', width: '250px'}}>
-              <CircularMeter min={0} max={200} data={data} partitions={10}/>
-            </div>
+            <CircularMeter min={0} max={200} data={data} partitions={10} units={"°C"}/>
             
           </section>
         </div>
@@ -73,7 +84,7 @@ export default function Home() {
 
 
       {/* Status Section */}
-      <section className={styles.status}>
+      <section >
         <div className={styles.sectionTitle}>Status</div>
         <div className={styles.statusIndicator}>
           <div className={`${styles.statusItem} ${styles.alert}`}>

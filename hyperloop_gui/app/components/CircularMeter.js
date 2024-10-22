@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './CircularMeter.module.css';
 
-const CircularMeter = ({ min, max, data, partitions }) => {
+const CircularMeter = ({ min, max, data, units, partitions }) => {
     // Calculate the proportion of the meter based on the current data
     const proportion = ((data - min) / (max - min));
     console.log(min + " " + max + " " + data)
@@ -99,8 +99,11 @@ const CircularMeter = ({ min, max, data, partitions }) => {
             <div className={styles.dataDisplay}>
                 <div className={styles.dataValue}>{data}</div>
             </div>
+            <div className={styles.units}>{units}</div>
         </div>
     );
 };
+
+
 
 export default CircularMeter;
