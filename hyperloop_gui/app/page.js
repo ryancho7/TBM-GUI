@@ -14,10 +14,10 @@ export default function Home() {
   ];
   
   const [machineIntegrity, setMachineIntegrity] = useState(79);
-  const [cutterHeadStatus, setCutterHeadStatus] = useState("Runnings")
+  const [cutterHeadStatus, setCutterHeadStatus] = useState("Running")
   const [motorTemp, setMotorTemp] = useState(20);
   const [circuitTemp, setCircuitTemp] = useState(18);
-  const [data, setData] = useState(0);
+  const [data, setData] = useState(25);
 
   const handleSliderChange = (event) => {
     setData(Number(event.target.value));
@@ -41,17 +41,18 @@ export default function Home() {
           <Status color={'green'} description={cutterHeadStatus}/>
         </div>
 
-        <div className={styles.rpmContainer}>
-          <div className={styles.meterTitle}>Rotation Speed</div>
-          <CircularMeter min={0} max={200} data={data} partitions={10} units={"RPM"}/>
+        <div className={styles.temp}>
+          <div className={styles.tempContainer}>
+            <div className={styles.meterTitle}>Motor Temperature</div>
+            <CircularMeter min={0} max={50} data={data} partitions={10} units={"°C"} size={150}/>
+          </div>
+          <div className={styles.tempContainer}>
+            <div className={styles.meterTitle}>Circuit Temperature</div>
+            <CircularMeter min={0} max={50} data={data} partitions={10} units={"°C"} size={150}/>
+          </div>
         </div>
-        <div className={styles.sectionContent}>
-          <section>
-            <div>RPM</div>
-            <CircularMeter min={0} max={200} data={data} partitions={10} units={"°C"}/>
-            
-          </section>
-        </div>
+        
+        {/*
         {motors.map((motor, index) => (
           <QuickStatus 
             name={motor.name} 
@@ -61,19 +62,25 @@ export default function Home() {
             status={motor.status}
             />
         ))}
+        */}
       </section>
 
       {/* Pump Section */}
-      <section className={styles.propulsion}>
-        <div>
-          <h1>Speedometer Example</h1>
-          <CircularMeter min={0} max={200} data={data} partitions={10} />
+      <section className={styles.pump}>
+        <div className={styles.sectionTitle}>Pump</div>
+        <div className={styles.statusContainer}>
+          <div style={{marginRight: '20px'}}>Status:</div> 
+          <Status color={'green'} description={cutterHeadStatus}/>
         </div>
+        <div className={styles.tempContainer}>
+            <div className={styles.meterTitle}>Flow Rate</div>
+            <CircularMeter min={0} max={50} data={data} partitions={10} units={"m3/s"} size={150}/>
+          </div>
         <div className={styles.sliderContainer}>
           <input
             type="range"
             min={0}
-            max={200}
+            max={50}
             value={data}
             onChange={handleSliderChange}
             className={styles.slider}

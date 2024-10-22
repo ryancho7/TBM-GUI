@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './CircularMeter.module.css';
 
-const CircularMeter = ({ min, max, data, units, partitions }) => {
+const CircularMeter = ({ min, max, data, units, partitions, size}) => {
     // Calculate the proportion of the meter based on the current data
     const proportion = ((data - min) / (max - min));
     console.log(min + " " + max + " " + data)
@@ -35,7 +35,7 @@ const CircularMeter = ({ min, max, data, units, partitions }) => {
     const needleY2 = 50 + needleLength * Math.sin(needleAngleRad);
 
     return (
-        <div className={styles.meterContainer}>
+        <div className={styles.meterContainer} style={{height: `${size}px`, width: `${size}px`}}>
             <svg viewBox="0 0 100 100">
                 {/*background circle */}
                 <circle
