@@ -44,11 +44,30 @@ export default function Home() {
         <div className={styles.temp}>
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Motor Temperature</div>
-            <CircularMeter min={0} max={50} data={data} partitions={10} units={"°C"} size={150}/>
+            <CircularMeter 
+              min={0} max={50} data={data} partitions={10} units={"°C"} size={150}
+              colorRanges={[
+                { min: 0, max: 18, color: 'red' },      // Critical low
+                { min: 18, max: 23, color: 'yellow' },  // Warning low
+                { min: 23, max: 33, color: 'green' },   // Safe range
+                { min: 33, max: 40, color: 'yellow' },  // Warning high
+                { min: 40, max: 50, color: 'red' },     // Critical high
+              ]}
+            />
           </div>
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Circuit Temperature</div>
-            <CircularMeter min={0} max={50} data={data} partitions={10} units={"°C"} size={150}/>
+            <CircularMeter 
+              min={0} max={50} data={data} partitions={10} units={"°C"} size={150}
+              colorRanges={[
+                { min: 0, max: 18, color: 'red' },      // Critical low
+                { min: 18, max: 23, color: 'yellow' },  // Warning low
+                { min: 23, max: 33, color: 'green' },   // Safe range
+                { min: 33, max: 40, color: 'yellow' },  // Warning high
+                { min: 40, max: 50, color: 'red' },     // Critical high
+              ]}
+            />          
+
           </div>
         </div>
         
@@ -74,8 +93,17 @@ export default function Home() {
         </div>
         <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Flow Rate</div>
-            <CircularMeter min={0} max={50} data={data} partitions={10} units={"m3/s"} size={150}/>
-          </div>
+            <CircularMeter 
+              min={0} max={50} data={data} partitions={10} units={"m3/s"} size={150}
+              colorRanges={[
+                { min: 0, max: 18, color: 'red' },      // Critical low
+                { min: 18, max: 23, color: 'yellow' },  // Warning low
+                { min: 23, max: 33, color: 'green' },   // Safe range
+                { min: 33, max: 40, color: 'yellow' },  // Warning high
+                { min: 40, max: 50, color: 'red' },     // Critical high
+              ]}
+            />
+        </div>
         <div className={styles.sliderContainer}>
           <input
             type="range"

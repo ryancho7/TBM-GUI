@@ -2,10 +2,10 @@
 import { useEffect, useState } from 'react';
 import styles from './CircularMeter.module.css';
 
-const CircularMeter = ({ min, max, data, units, partitions, size}) => {
+const CircularMeter = ({ min, max, data, units, partitions, size, colorRanges}) => {
     // Calculate the proportion of the meter based on the current data
     const proportion = ((data - min) / (max - min));
-    console.log(min + " " + max + " " + data)
+    //console.log(min + " " + max + " " + data)
 
     // Convert the percentage to the stroke-dashoffset for the SVG circle
     const circumference = 2 * Math.PI * 45; // 45 is the radius of the circle
@@ -34,21 +34,86 @@ const CircularMeter = ({ min, max, data, units, partitions, size}) => {
     const needleX2 = 50 + needleLength * Math.cos(needleAngleRad);
     const needleY2 = 50 + needleLength * Math.sin(needleAngleRad);
 
+    function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+        const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    
+        return {
+            x: centerX + radius * Math.cos(angleInRadians),
+            y: centerY + radius * Math.sin(angleInRadians),
+        };
+    }
+    
+    // Function to describe an arc path
+    function describeArc(x, y, radius, startAngle, endAngle) {
+        const start = polarToCartesian(x, y, radius, endAngle);
+        const end = polarToCartesian(x, y, radius, startAngle);
+    
+        const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+    
+        const d = [
+            'M', start.x, start.y,
+            'A', radius, radius, 0, largeArcFlag, 0, end.x, end.y,
+        ].join(' ');
+    
+        return d;
+    }
+    
+    // Generate linear gradients and arcs
+    const gradientDefs = colorRanges.map((range, index) => {
+        const nextRange = colorRanges[index + 1];
+        
+        // Calculate start and end points for gradient
+        const startProportion = (range.min - min) / (max - min);
+        const endProportion = (range.max - min) / (max - min);
+    
+        const startAngle = -120 + 240 * startProportion;
+        const endAngle = -120 + 240 * endProportion;
+    
+        const start = polarToCartesian(50, 50, 45, startAngle); // Start of arc
+        const end = polarToCartesian(50, 50, 45, endAngle); // End of arc
+    
+        return (
+            <linearGradient id={`grad${index}`} key={index} gradientUnits="userSpaceOnUse" x1={start.x} y1={start.y} x2={end.x} y2={end.y}>
+                <stop offset="0%" stopColor={range.color} />
+                {nextRange && <stop offset="100%" stopColor={nextRange.color} />}
+            </linearGradient>
+        );
+    });
+    
+    // Generate arcs for each color range
+    const arcs = colorRanges.map((range, index) => {
+        const startProportion = (range.min - min) / (max - min);
+        const endProportion = (range.max - min) / (max - min);
+    
+        const startAngle = -120 + 240 * startProportion;
+        const endAngle = -120 + 240 * endProportion;
+    
+        const pathData = describeArc(50, 50, 45, startAngle, endAngle);
+    
+        return (
+            <path
+                key={index}
+                d={pathData}
+                fill="none"
+                stroke={`url(#grad${index})`} // Use the linear gradient along the arc path
+                strokeWidth="10"
+            />
+        );
+    });
+        
+    
     return (
         <div className={styles.meterContainer} style={{height: `${size}px`, width: `${size}px`}}>
             <svg viewBox="0 0 100 100">
-                {/*background circle */}
-                <circle
-                    className={styles.meterBackground}
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    style={{
-                        strokeDasharray: `${circumference * (2 / 3)}`, // Display only the 240 degrees arc
-                        transform: "rotate(150deg)", // Rotate to make it start at 8 o'clock (stroke starts on x axis, at 90 degrees from noon)
-                        transformOrigin: "50% 50%", // Rotate around the center
-                    }}
-                ></circle>
+                {/* Colored arcs */}
+                <defs>
+                    {/* Define linear gradients */}
+                    {gradientDefs}
+                </defs>
+                {/* Draw arcs */}
+                {arcs}
+
+                
                 
                 {/* Needle */}
                 <line
