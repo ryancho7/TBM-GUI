@@ -4,7 +4,7 @@ import CircularMeter from "./components/CircularMeter";
 import QuickStatus from "./components/QuickStatus";
 import IntegrityMeter from "./components/IntegrityMeter";
 import Status from "./components/status";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 export default function Home() {
   const motors = [
     {name: 'Front', status: 'green', rpm: 1000, temp: 20}, 
@@ -22,6 +22,30 @@ export default function Home() {
   const handleSliderChange = (event) => {
     setData(Number(event.target.value));
   };
+
+  useEffect(() => {
+    // Step 1: Connect to the WebSocket server
+    const socket = new WebSocket('ws://localhost:5000'); // Adjust URL if necessary
+
+    // Step 2: Handle incoming WebSocket messages
+    socket.onmessage = function (event) {
+      console.log(event);
+      const data = JSON.parse(event.data); // Parse the JSON data
+      const temp = Math.floor(data.sensorData*100) / 100.0
+      setMotorTemp(temp); // Update motor temp
+      setCircuitTemp(temp);
+    };
+
+    // Step 3: Handle WebSocket connection close
+    socket.onclose = function () {
+      console.log('WebSocket connection closed');
+    };
+
+    // Step 4: Clean up WebSocket connection on component unmount
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -45,7 +69,7 @@ export default function Home() {
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Motor Temperature</div>
             <CircularMeter 
-              min={0} max={50} data={data} partitions={10} units={"°C"} size={150}
+              min={0} max={50} data={motorTemp} partitions={10} units={"°C"} size={150}
               colorRanges={[
                 { min: 0, max: 18, color: 'red' },      // Critical low
                 { min: 18, max: 23, color: 'yellow' },  // Warning low
@@ -58,7 +82,7 @@ export default function Home() {
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Circuit Temperature</div>
             <CircularMeter 
-              min={0} max={50} data={data} partitions={10} units={"°C"} size={150}
+              min={0} max={50} data={circuitTemp} partitions={10} units={"°C"} size={150}
               colorRanges={[
                 { min: 0, max: 18, color: 'red' },      // Critical low
                 { min: 18, max: 23, color: 'yellow' },  // Warning low
