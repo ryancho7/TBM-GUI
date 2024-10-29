@@ -94,7 +94,7 @@ export default function Home() {
         <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Flow Rate</div>
             <CircularMeter 
-              min={0} max={50} data={data} partitions={10} units={"m3/s"} size={150}
+              min={0} max={50} data={data} partitions={10} units={"L/min"} size={150}
               colorRanges={[
                 { min: 0, max: 18, color: 'red' },      // Critical low
                 { min: 18, max: 23, color: 'yellow' },  // Warning low
