@@ -16,7 +16,7 @@ export default function Home() {
   const [machineIntegrity, setMachineIntegrity] = useState(79);
   const [cutterHeadStatus, setCutterHeadStatus] = useState("Running")
   const [motorTemp, setMotorTemp] = useState(20);
-  const [circuitTemp, setCircuitTemp] = useState(18);
+  const [circuitTemp, setCircuitTemp] = useState(20);
   const [data, setData] = useState(25);
 
   const handleSliderChange = (event) => {
@@ -31,9 +31,18 @@ export default function Home() {
     socket.onmessage = function (event) {
       console.log(event);
       const data = JSON.parse(event.data); // Parse the JSON data
-      const temp = Math.floor(data.sensorData*100) / 100.0
-      setMotorTemp(temp); // Update motor temp
-      setCircuitTemp(temp);
+      const newMotorTemp = data.motor_temp.value;
+      if(newMotorTemp){
+        setMotorTemp(Math.floor(newMotorTemp * 100) / 100);
+      }
+      const newCircuitTemp = data.circuit_temp.value;
+      if(newCircuitTemp){
+        setCircuitTemp(Math.floor(newCircuitTemp * 100) / 100);
+      }
+      const newFlow = data.flow.value;
+      if(newFlow){
+        setData(Math.floor(newFlow * 100) / 100);
+      }
     };
 
     // Step 3: Handle WebSocket connection close
@@ -71,10 +80,10 @@ export default function Home() {
             <CircularMeter 
               min={0} max={50} data={motorTemp} partitions={10} units={"°C"} size={150}
               colorRanges={[
-                { min: 0, max: 18, color: 'red' },      // Critical low
-                { min: 18, max: 23, color: 'yellow' },  // Warning low
-                { min: 23, max: 33, color: 'green' },   // Safe range
-                { min: 33, max: 40, color: 'yellow' },  // Warning high
+                { min: 0, max: 11, color: 'red' },      // Critical low
+                { min: 11, max: 20, color: 'yellow' },  // Warning low
+                { min: 20, max: 30, color: 'green' },   // Safe range
+                { min: 30, max: 40, color: 'yellow' },  // Warning high
                 { min: 40, max: 50, color: 'red' },     // Critical high
               ]}
             />
@@ -120,11 +129,11 @@ export default function Home() {
             <CircularMeter 
               min={0} max={50} data={data} partitions={10} units={"L/min"} size={150}
               colorRanges={[
-                { min: 0, max: 18, color: 'red' },      // Critical low
-                { min: 18, max: 23, color: 'yellow' },  // Warning low
+                { min: 0, max: 9, color: 'red' },      // Critical low
+                { min: 9, max: 23, color: 'yellow' },  // Warning low
                 { min: 23, max: 33, color: 'green' },   // Safe range
                 { min: 33, max: 40, color: 'yellow' },  // Warning high
-                { min: 40, max: 50, color: 'red' },     // Critical high
+                { min: 40, max: 50, color: 'red' },    // Critical high
               ]}
             />
         </div>
