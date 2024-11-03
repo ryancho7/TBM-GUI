@@ -78,7 +78,7 @@ export default function Home() {
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Motor Temperature</div>
             <CircularMeter 
-              min={0} max={50} data={motorTemp} partitions={10} units={"°C"} size={150}
+              id={0} min={0} max={50} data={motorTemp} partitions={10} units={"°C"} size={150}
               colorRanges={[
                 { min: 0, max: 11, color: 'red' },      // Critical low
                 { min: 11, max: 20, color: 'yellow' },  // Warning low
@@ -91,7 +91,7 @@ export default function Home() {
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Circuit Temperature</div>
             <CircularMeter 
-              min={0} max={50} data={circuitTemp} partitions={10} units={"°C"} size={150}
+              id={1} min={0} max={50} data={circuitTemp} partitions={10} units={"°C"} size={150}
               colorRanges={[
                 { min: 0, max: 18, color: 'red' },      // Critical low
                 { min: 18, max: 23, color: 'yellow' },  // Warning low
@@ -127,7 +127,7 @@ export default function Home() {
         <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Flow Rate</div>
             <CircularMeter 
-              min={0} max={50} data={data} partitions={10} units={"L/min"} size={150}
+              id={2} min={0} max={50} data={data} partitions={10} units={"L/min"} size={150}
               colorRanges={[
                 { min: 0, max: 9, color: 'red' },      // Critical low
                 { min: 9, max: 23, color: 'yellow' },  // Warning low

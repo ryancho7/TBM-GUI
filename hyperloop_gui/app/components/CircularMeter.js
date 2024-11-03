@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './CircularMeter.module.css';
 
-const CircularMeter = ({ min, max, data, units, partitions, size, colorRanges}) => {
+const CircularMeter = ({ id, min, max, data, units, partitions, size, colorRanges}) => {
     // Calculate the proportion of the meter based on the current data
     const proportion = ((data - min) / (max - min));
     //console.log(min + " " + max + " " + data)
@@ -60,33 +60,65 @@ const CircularMeter = ({ min, max, data, units, partitions, size, colorRanges}) 
     
     // Generate linear gradients and arcs
     const gradientDefs = colorRanges.map((range, index) => {
+        //console.log(index + JSON.stringify(range) + "prev: " + JSON.stringify(prevRange) + " next: " + JSON.stringify(nextRange));
+        let begin = 0;
+        if(index > 0){
+            begin = (range.max - range.min) / 3 + range.min
+        }
+
+        const mid = (range.max - range.min) * 2/3 + range.min;
+
+        let stop = max;
+        let nextColor = range.color;
         const nextRange = colorRanges[index + 1];
+        if(nextRange){
+            stop = (nextRange.max - nextRange.min) / 3 + nextRange.min
+            nextColor = nextRange.color;
+        }
+
         
         // Calculate start and end points for gradient
-        const startProportion = (range.min - min) / (max - min);
-        const endProportion = (range.max - min) / (max - min);
+        const startProportion = (begin - min) / (max - min);
+        const midProportion = (mid - begin) / (stop - begin);
+        const endProportion = (stop - min) / (max - min);
     
         const startAngle = -120 + 240 * startProportion;
         const endAngle = -120 + 240 * endProportion;
     
         const start = polarToCartesian(50, 50, 45, startAngle); // Start of arc
         const end = polarToCartesian(50, 50, 45, endAngle); // End of arc
-    
+        const info = {index: index, start: begin, mid: mid, end: stop, color: range.color, nextColor: nextColor, midProp: midProportion};
+        console.log(info);
         return (
-            <linearGradient id={`grad${index}`} key={index} gradientUnits="userSpaceOnUse" x1={start.x} y1={start.y} x2={end.x} y2={end.y}>
+            <linearGradient id={`grad${id}${index}`} key={index} gradientUnits="userSpaceOnUse" x1={start.x} y1={start.y} x2={end.x} y2={end.y}>
                 <stop offset="0%" stopColor={range.color} />
-                {nextRange && <stop offset="100%" stopColor={nextRange.color} />}
+                <stop offset={midProportion} stopColor={range.color}/>
+                <stop offset="100%" stopColor={nextColor}/>
             </linearGradient>
         );
     });
     
     // Generate arcs for each color range
     const arcs = colorRanges.map((range, index) => {
-        const startProportion = (range.min - min) / (max - min);
-        const endProportion = (range.max - min) / (max - min);
+        let begin = 0;
+        if(index > 0){
+            begin = (range.max - range.min) / 3 + range.min
+        }
+
+        let stop = max;
+        const nextRange = colorRanges[index + 1];
+        if(nextRange){
+            stop = (nextRange.max - nextRange.min) / 3 + nextRange.min
+        }
+
+        
+        // Calculate start and end points for gradient
+        const startProportion = (begin - min) / (max - min);
+        const endProportion = (stop - min) / (max - min);
     
         const startAngle = -120 + 240 * startProportion;
         const endAngle = -120 + 240 * endProportion;
+    
     
         const pathData = describeArc(50, 50, 45, startAngle, endAngle);
     
@@ -95,7 +127,7 @@ const CircularMeter = ({ min, max, data, units, partitions, size, colorRanges}) 
                 key={index}
                 d={pathData}
                 fill="none"
-                stroke={`url(#grad${index})`} // Use the linear gradient along the arc path
+                stroke={`url(#grad${id}${index})`} // Use the linear gradient along the arc path
                 strokeWidth="10"
             />
         );

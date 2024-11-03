@@ -1,35 +1,36 @@
+"use client"
 import styles from "./page.module.css";
 import CircularMeter from "../components/CircularMeter";
+import { useState } from "react";
 const Motors = () => {
-  const motors = [
-    {name: 'Front', status: 'green', rpm: 1000, temp: 20}, 
-    {name: 'Back', status: 'yellow', rpm: 800, temp: 40},
-    {name: 'Top', status: 'red', rpm: 750, temp: 30},
-    {name: 'Core', status: 'green', rpm: 1200, temp: 50},
-  ];
-  
-  const renderMotorDetail = (name, key, temp, rpm, status) => {
-    return(
-        <div className={styles.motorDetail} key={key}>
-            <div className={styles.title}>{name}</div>
-            <div className={styles.circleContainer}>
-              <CircularMeter min={0} max={5000} data={rpm} partitions={10} />
-            </div>
-            <div>Status: </div>
-            <div>insert status informations</div>
+  const [data, setData] = useState(0);
 
-            <div style={{marginTop: '50px'}}>insert other information</div>
-        </div>
-    );
-    
-  }
+
+  const handleSliderChange = (event) => {
+    setData(Number(event.target.value));
+  }; 
   return (
-    <div>
+    <div style={{marginLeft: '20%'}}>
         <h1 className={styles.title}>Motors</h1>
-        <div className={styles.container}>
-            {motors.map((motor, index) => 
-                renderMotorDetail(motor.name, index, motor.temp, motor.rpm, motor.status))
-            }
+        <CircularMeter
+          id={0} min={0} max={50} data={data} partitions={10} units={"°C"} size={150}
+          colorRanges={[
+            { min: 0, max: 20, color: 'red' },      
+            {min: 20, max: 35, color: 'yellow'},
+            {min: 35, max: 50, color: 'green'}     
+          ]}
+        />
+
+        <div className={styles.sliderContainer}>
+          <input
+            type="range"
+            min={0}
+            max={50}
+            value={data}
+            onChange={handleSliderChange}
+            className={styles.slider}
+          />
+          <div className={styles.sliderValue}>{data}</div>
         </div>
         
 
