@@ -87,8 +87,8 @@ const CircularMeter = ({ id, min, max, data, units, partitions, size, colorRange
     
         const start = polarToCartesian(50, 50, 45, startAngle); // Start of arc
         const end = polarToCartesian(50, 50, 45, endAngle); // End of arc
-        const info = {index: index, start: begin, mid: mid, end: stop, color: range.color, nextColor: nextColor, midProp: midProportion};
-        console.log(info);
+        //const info = {index: index, start: begin, mid: mid, end: stop, color: range.color, nextColor: nextColor, midProp: midProportion};
+        //console.log(info);
         return (
             <linearGradient id={`grad${id}${index}`} key={index} gradientUnits="userSpaceOnUse" x1={start.x} y1={start.y} x2={end.x} y2={end.y}>
                 <stop offset="0%" stopColor={range.color} />
