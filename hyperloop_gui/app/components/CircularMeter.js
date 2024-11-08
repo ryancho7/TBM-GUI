@@ -153,7 +153,7 @@ const CircularMeter = ({ id, min, max, data, units, partitions, size, colorRange
                     y1={needleY1}
                     x2={needleX2}
                     y2={needleY2}
-                    stroke="red"
+                    stroke="#a10d00"
                     strokeWidth="2"
                 />
                 <g className={styles.labels}>
