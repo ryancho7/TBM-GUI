@@ -15,8 +15,8 @@ export default function Home() {
   
   const [machineIntegrity, setMachineIntegrity] = useState(79);
   const [cutterHeadStatus, setCutterHeadStatus] = useState("Running")
-  const [motorTemp, setMotorTemp] = useState(20);
-  const [circuitTemp, setCircuitTemp] = useState(20);
+  const [motorTemp, setMotorTemp] = useState(81.36);
+  const [pumpTemp, setPumpTemp] = useState(100);
   const [data, setData] = useState(25);
 
   const handleSliderChange = (event) => {
@@ -60,15 +60,12 @@ export default function Home() {
     <div className={styles.container}>
       {/* Header Section */}
       <header className={styles.header}>
-        <div style={{height: '30px', width: '200px'}}>
-          <IntegrityMeter integrity={machineIntegrity} green={80} yellow={60}/>
-        </div>
         <button className={styles.stopButton}>STOP</button>
       </header>
 
-      {/* Cutterhead Section */}
+      {/* Temperature Section */}
       <section className={styles.motors}>
-        <div className={styles.sectionTitle}>Cutter Head</div>
+        <div className={styles.sectionTitle}>Temperatures</div>
         <div className={styles.statusContainer}>
           <div style={{marginRight: '20px'}}>Status:</div> 
           <Status color={'green'} description={cutterHeadStatus}/>
@@ -78,26 +75,26 @@ export default function Home() {
           <div className={styles.tempContainer}>
             <div className={styles.meterTitle}>Motor Temperature</div>
             <CircularMeter 
-              id={0} min={0} max={50} data={motorTemp} partitions={10} units={"°C"} size={150}
+              id={0} min={0} max={110} data={motorTemp} partitions={10} units={"°F"} size={150}
               colorRanges={[
-                { min: 0, max: 11, color: 'red' },      // Critical low
-                { min: 11, max: 20, color: 'yellow' },  // Warning low
-                { min: 20, max: 30, color: 'green' },   // Safe range
-                { min: 30, max: 40, color: 'yellow' },  // Warning high
-                { min: 40, max: 50, color: 'red' },     // Critical high
+                { min: 0, max: 65, color: 'red' },      // Critical low
+                { min: 65, max: 75, color: 'yellow' },  // Warning low
+                { min: 75, max: 85, color: 'green' },   // Safe range
+                { min: 85, max: 90, color: 'yellow' },  // Warning high
+                { min: 90, max: 110, color: 'red' },     // Critical high
               ]}
             />
           </div>
           <div className={styles.tempContainer}>
-            <div className={styles.meterTitle}>Circuit Temperature</div>
+            <div className={styles.meterTitle}>Pump Temperature</div>
             <CircularMeter 
-              id={1} min={0} max={50} data={circuitTemp} partitions={10} units={"°C"} size={150}
+              id={1} min={0} max={200} data={pumpTemp} partitions={10} units={"°F"} size={150}
               colorRanges={[
-                { min: 0, max: 18, color: 'red' },      // Critical low
-                { min: 18, max: 23, color: 'yellow' },  // Warning low
-                { min: 23, max: 33, color: 'green' },   // Safe range
-                { min: 33, max: 40, color: 'yellow' },  // Warning high
-                { min: 40, max: 50, color: 'red' },     // Critical high
+                { min: 0, max: 65, color: 'red' },      // Critical low
+                { min: 65, max: 85, color: 'yellow' },  // Warning low
+                { min: 85, max: 105, color: 'green' },   // Safe range
+                { min: 105, max: 130, color: 'yellow' },  // Warning high
+                { min: 130, max: 200, color: 'red' },     // Critical high
               ]}
             />          
 
@@ -117,26 +114,42 @@ export default function Home() {
         */}
       </section>
 
-      {/* Pump Section */}
+      {/* Pump Flow Section */}
       <section className={styles.pump}>
-        <div className={styles.sectionTitle}>Pump</div>
+        <div className={styles.sectionTitle}>Pump Flow</div>
         <div className={styles.statusContainer}>
           <div style={{marginRight: '20px'}}>Status:</div> 
           <Status color={'green'} description={cutterHeadStatus}/>
         </div>
-        <div className={styles.tempContainer}>
-            <div className={styles.meterTitle}>Flow Rate</div>
-            <CircularMeter 
-              id={2} min={0} max={50} data={data} partitions={10} units={"L/min"} size={150}
-              colorRanges={[
-                { min: 0, max: 9, color: 'red' },      // Critical low
-                { min: 9, max: 23, color: 'yellow' },  // Warning low
-                { min: 23, max: 33, color: 'green' },   // Safe range
-                { min: 33, max: 40, color: 'yellow' },  // Warning high
-                { min: 40, max: 50, color: 'red' },    // Critical high
-              ]}
-            />
+        <div className={styles.temp}>
+          <div className={styles.tempContainer}>
+              <div className={styles.meterTitle}>Water in Rate </div>
+              <CircularMeter 
+                id={2} min={0} max={40} data={data} partitions={10} units={"Gal/min"} size={150}
+                colorRanges={[
+                  { min: 0, max: 15, color: 'red' },      // Critical low
+                  { min: 15, max: 22, color: 'yellow' },  // Warning low
+                  { min: 22, max: 27, color: 'green' },   // Safe range
+                  { min: 27, max: 35, color: 'yellow' },  // Warning high
+                  { min: 35, max: 40, color: 'red' },    // Critical high
+                ]}
+              />
+          </div>
+          <div className={styles.tempContainer}>
+              <div className={styles.meterTitle}>Muck out Rate </div>
+              <CircularMeter 
+                id={3} min={0} max={60} data={43.2} partitions={10} units={"Gal/min"} size={150}
+                colorRanges={[
+                  { min: 0, max: 35, color: 'red' },      // Critical low
+                  { min: 35, max: 41, color: 'yellow' },  // Warning low
+                  { min: 41, max: 48, color: 'green' },   // Safe range
+                  { min: 48, max: 55, color: 'yellow' },  // Warning high
+                  { min: 55, max: 60, color: 'red' },    // Critical high
+                ]}
+              />
+          </div>
         </div>
+        
         <div className={styles.sliderContainer}>
           <input
             type="range"
@@ -153,18 +166,25 @@ export default function Home() {
 
       {/* Status Section */}
       <section >
-        <div className={styles.sectionTitle}>Status</div>
-        <div className={styles.statusIndicator}>
-          <div className={`${styles.statusItem} ${styles.alert}`}>
-            <p>Explosive/Flammable Gases</p>
-            <p>8.0</p>
-          </div>
-          <div className={styles.statusItem}>
-            <p>Communication</p>
-          </div>
-          <div className={styles.statusItem}>
-            <p>Power</p>
-          </div>
+        <div style={{height: '40px'}}></div>
+        <div className={styles.statusContainer}>
+          <div style={{marginRight: '20px'}}>Bentonite Pump:</div> 
+          <Status color={'green'} description={cutterHeadStatus}/>
+        </div>
+        <div style={{height: '20px'}}></div>
+        <div className={styles.statusContainer}>
+          <div style={{marginRight: '20px'}}>Communication:</div> 
+          <Status color={'green'} description={cutterHeadStatus}/>
+        </div>
+        <div style={{height: '20px'}}></div>
+        <div className={styles.statusContainer}>
+          <div style={{marginRight: '20px'}}>Power:</div> 
+          <Status color={'green'} description={cutterHeadStatus}/>
+        </div>
+        <div style={{height: '20px'}}></div>
+        <div className={`${styles.statusItem} ${styles.alert}`}>
+          <p>Explosive/Flammable Gases</p>
+          <p>N/A</p>
         </div>
       </section>
     </div>

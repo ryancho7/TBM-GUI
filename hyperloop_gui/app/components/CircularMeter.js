@@ -7,8 +7,6 @@ const CircularMeter = ({ id, min, max, data, units, partitions, size, colorRange
     const proportion = ((data - min) / (max - min));
     //console.log(min + " " + max + " " + data)
 
-    // Convert the percentage to the stroke-dashoffset for the SVG circle
-    const circumference = 2 * Math.PI * 45; // 45 is the radius of the circle
 
     // Arc is 240 degrees (2/3 of the full circle)
     // Generate labels
@@ -60,7 +58,6 @@ const CircularMeter = ({ id, min, max, data, units, partitions, size, colorRange
     
     // Generate linear gradients and arcs
     const gradientDefs = colorRanges.map((range, index) => {
-        //console.log(index + JSON.stringify(range) + "prev: " + JSON.stringify(prevRange) + " next: " + JSON.stringify(nextRange));
         let begin = 0;
         if(index > 0){
             begin = (range.max - range.min) / 3 + range.min
