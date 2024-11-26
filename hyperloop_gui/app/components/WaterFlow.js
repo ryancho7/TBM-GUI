@@ -20,7 +20,7 @@ const RedBackground = styled.div`
   bottom: 0;
   background: #FF4F4F;
   opacity: 0.3;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.1s ease-in-out;
   pointer-events: none;
   z-index: 0;
 
@@ -67,7 +67,7 @@ const Marker = styled.div`
   top: -55px;
   left: ${props => (props.position / 230) * 100}%;
   transform: translateX(-50%);
-  transition: left 0.3s ease-in-out;
+  transition: left 0.1s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -84,7 +84,7 @@ const Marker = styled.div`
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    transition: color 0.3s ease-in-out;
+    transition: color 0.1s ease-in-out;
   }
   
   &::after {
@@ -95,7 +95,7 @@ const Marker = styled.div`
     border-top: 25px solid ${props => (props.position < 75 || props.position > 115) ? '#FF4F4F' : '#00ff00'};
     position: absolute;
     top: 25px;
-    transition: border-top-color 0.3s ease-in-out;
+    transition: border-top-color 0.1s ease-in-out;
   }
 `;
 
